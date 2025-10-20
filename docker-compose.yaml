@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: icp
+      MYSQL_USER: icp
+      MYSQL_PASSWORD: icp
+    ports: ["3306:3306"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uicp -picp -h localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  api:
+    build: 
+      context: .
+      dockerfile: apps/api/Dockerfile
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports: ["4000:4000"]
+
+  web:
+    build: 
+      context: .
+      dockerfile: apps/web/Dockerfile
+    env_file: .env
+    depends_on: [api]
+    ports: ["3000:3000"]
+
+volumes:
+  mysql_data:

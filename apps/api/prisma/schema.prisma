@@ -1,0 +1,30 @@
+datasource db { provider = "mysql"; url = env("DATABASE_URL") }
+generator client { provider = "prisma-client-js" }
+
+model Tenant {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  name       String
+  createdAt  DateTime @default(now())
+  venues     Venue[]
+}
+
+model Venue {
+  id        Int     @id @default(autoincrement())
+  tenantId  Int
+  name      String
+  slug      String
+  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  events    Event[]
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  tenantId  Int
+  venueId   Int
+  title     String
+  startsAt  DateTime
+  endsAt    DateTime
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  venue     Venue    @relation(fields: [venueId], references: [id])
+}

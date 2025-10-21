@@ -1,5 +1,8 @@
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 WORKDIR /app
+
+# OpenSSL
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # pnpm 8.6.0
 RUN corepack enable && corepack prepare pnpm@8.6.0 --activate
@@ -11,7 +14,7 @@ COPY . .
 RUN pnpm i --frozen-lockfile --filter ./apps/api...
 
 WORKDIR /app/apps/api
-RUN pnpm build
+RUN pnpm prisma:gen
 
 EXPOSE 4000
 CMD ["pnpm","start"]

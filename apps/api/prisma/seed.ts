@@ -9,11 +9,11 @@ async function main() {
   });
 
   const venue = await prisma.venue.upsert({
-    where: { slug: 'main-hall' },
+    where: { tenantId_slug: { tenantId: tenant.id, slug: 'main-hall' } }, // ⬅️ clave compuesta
     update: {},
     create: { slug: 'main-hall', name: 'Main Hall', tenantId: tenant.id }
   });
-
+  
   const now = new Date();
   const in2h = new Date(now.getTime() + 2 * 60 * 60 * 1000);
   const in4h = new Date(now.getTime() + 4 * 60 * 60 * 1000);

@@ -1,15 +1,5 @@
 # Interlude Cast Pro — Etapa 0: Fundaciones 🚀
 
-## 🎯 Objetivo
-Levantar el esqueleto del sistema con experiencia de desarrollo **turn-key**, validando:
-- Monorepo con `apps/api` (Node.js + Apollo GraphQL) y `apps/web` (React + Apollo Client).
-- Docker Compose con `api`, `web`, `mysql`, `redis`.
-- Migraciones y `seed` iniciales.
-- Config centralizada `.env` + logger básico.
-- Healthcheck en `GET /health`.
-
----
-
 ## ✅ Requisitos
 - **Node.js 20+**
 - **PNPM 8**
@@ -108,22 +98,6 @@ Respuesta esperada:
 
 ---
 
-## 🧠 Desarrollo local (sin Docker, opcional)
-
-Si preferís correr cada app fuera de Docker:
-
-```bash
-# Terminal 1: API
-pnpm --filter api dev
-
-# Terminal 2: Web
-pnpm --filter web dev
-```
-
-Asegurate de tener un MySQL local o de mantener `mysql` por Docker y ajustar `DATABASE_URL` si corresponde.
-
----
-
 ## 🧾 Scripts disponibles
 
 En la raíz del monorepo:
@@ -134,17 +108,8 @@ En la raíz del monorepo:
 | `pnpm docker:down` | Apaga y elimina volúmenes (`-v`)             |
 | `pnpm db:migrate`  | Aplica migraciones (`prisma migrate deploy`) |
 | `pnpm db:seed`     | Ejecuta semillas iniciales                   |
+| `pnpm db:init`     | Ejecuta la primera migracion sin datos y seed|
 | `pnpm dev`         | Ejecuta apps en modo dev (Turborepo)         |
-
----
-
-## 🧭 Criterios de aceptación (checklist)
-
-- [x] `docker compose up` deja **API en :4000** y **Web en :3000**
-- [x] `pnpm db:migrate` y `pnpm db:seed` crean datos de ejemplo
-- [x] `GET /health` responde `{ ok: true }`
-- [x] `.env` centralizado y `pino` como logger básico
-- [x] README con pasos claros para setup y ejecución
 
 ---
 

@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import { useMemo } from 'react';
 
 const Q = gql`
   query Home($from: DateTime, $to: DateTime) {
@@ -9,9 +10,13 @@ const Q = gql`
 `;
 
 export default function App() {
-  const now = new Date();
-  const to = new Date(now.getTime()+7*24*3600*1000).toISOString();
-  const { data, loading, error } = useQuery(Q, { variables: { from: now.toISOString(), to } });
+  const { from, to } = useMemo(() => {
+    const now = new Date();
+    const toDate = new Date(now.getTime() + 7*24*3600*1000);
+    return { from: now.toISOString(), to: toDate.toISOString() };
+  }, []);
+
+  const { data, loading, error } = useQuery(Q, { variables: { from, to } });
 
   return (
     <div style={{ fontFamily:'Inter, system-ui', padding:24 }}>

@@ -9,7 +9,7 @@
     "docker:down": "docker compose down -v",
     "db:migrate": "pnpm --filter api prisma:migrate",
     "db:seed": "pnpm --filter api prisma:seed",
-    "db:start": "docker compose exec api npx prisma migrate dev --name init && docker compose exec api pnpm prisma:seed"
+    "db:init": "docker compose exec api pnpm prisma:init"
   },
   "devDependencies": {
     "turbo": "^2.1.0",

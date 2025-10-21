@@ -7,7 +7,8 @@
     "prisma:gen": "prisma generate",
     "prisma:format": "prisma format",
     "prisma:migrate": "prisma migrate deploy",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:init": "npx prisma migrate dev --name init && pnpm prisma:seed"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",

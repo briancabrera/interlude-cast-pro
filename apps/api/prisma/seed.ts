@@ -8,11 +8,15 @@ async function main() {
     create: { key: 'demo', name: 'Demo Tenant' }
   });
 
-  const venue = await prisma.venue.upsert({
-    where: { tenantId_slug: { tenantId: tenant.id, slug: 'main-hall' } }, // ⬅️ clave compuesta
-    update: {},
-    create: { slug: 'main-hall', name: 'Main Hall', tenantId: tenant.id }
+  let venue = await prisma.venue.findFirst({
+    where: { tenantId: tenant.id, slug: 'main-hall' }
   });
+
+  if (!venue) {
+    venue = await prisma.venue.create({
+      data: { slug: 'main-hall', name: 'Main Hall', tenantId: tenant.id }
+    });
+  }
   
   const now = new Date();
   const in2h = new Date(now.getTime() + 2 * 60 * 60 * 1000);
